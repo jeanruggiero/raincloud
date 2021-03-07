@@ -1,0 +1,21 @@
+chmod 400 <keyfile>
+ssh ec2-user@<instance_ip> -i <keyfile>
+
+sudo yum update
+sudo yum install ruby wget
+wget https://aws-codedeploy-us-west-2.s3.us-west-2.amazonaws.com/latest/install
+chmod +x ./install
+sudo ./install auto
+sudo service codedeploy-agent status
+
+sudo yum install docker
+sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo usermod -aG docker $USER
+newgrp docker
+
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
+
+sudo systemstl start docker.service
+docker run hello-world
