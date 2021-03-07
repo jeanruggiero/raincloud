@@ -27,7 +27,7 @@ class Data(View):
 
 class SensorList(View):
 
-    def get(self):
+    def get(self, request, *args, **kwargs):
         body = {
             "results": [1, 2]
         }
@@ -37,7 +37,7 @@ class SensorList(View):
 
 class SensorDetail(View):
 
-    def get(self, sensor_id):
+    def get(self, request, sensor_id, *args, **kwargs):
 
         if sensor_id == 1:
             body = {
