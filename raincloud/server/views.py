@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 import json
 
 
@@ -10,10 +12,55 @@ def index(request):
 
 class Data(View):
 
-    def post(self, request, sensor_id, *args, **kwargs):
+    @method_decorator(csrf_exempt)
+    def get(self, request, sensor_id, *args, **kwargs):
         print(f"received data from sensor id: {sensor_id}")
+
         body = json.loads(request.body)
-        print(body)
+        print(body['timestamp'])
+        print(body['value'])
+
+        # Write data to Timestream
+
+        return HttpResponse(201)
+
+
+class SensorList(View):
+
+    def get(self):
+        body = {
+            "results": [1, 2]
+        }
+
+        return HttpResponse(json.dumps(body), status=200, content_type="application/json")
+
+
+class SensorDetail(View):
+
+    def get(self, sensor_id):
+
+        if sensor_id == 1:
+            body = {
+                "sensor_id": 1,
+                "type": "pressure",
+                "units": "HPa",
+                "location": "desk",
+                "description": "test pressure sensor"
+            }
+
+        elif sensor_id == 2:
+            body = {
+                "sensor_id": 1,
+                "type": "pressure",
+                "units": "HPa",
+                "location": "desk",
+                "description": "test pressure sensor"
+            }
+        else:
+            return HttpResponseNotFound()
+
+        return HttpResponse(json.dumps(body), status=200, content_type="application/json")
+
 
 
 """
