@@ -2,12 +2,15 @@ chmod 400 <keyfile>
 ssh ec2-user@<instance_ip> -i <keyfile>
 
 sudo yum update
+
+# Install aws code deploy agent
 sudo yum install ruby wget
 wget https://aws-codedeploy-us-west-2.s3.us-west-2.amazonaws.com/latest/install
 chmod +x ./install
 sudo ./install auto
 sudo service codedeploy-agent status
 
+# Install & configure docker
 sudo yum install docker
 sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
@@ -20,6 +23,10 @@ sudo systemctl enable containerd.service
 sudo systemstl start docker.service
 docker run hello-world
 
+# Add an A DNS record in dnsimple
+# Make sure the new domain name is added to allowed hosts in django settings file
+
+# Set up git repo
 sudo yum install git
 
 # Add a deploy key
@@ -39,5 +46,8 @@ export SECRET_KEY=<key>
 export DB_USER=<db_user>
 export DB_PASSWORD=<db_password>
 
+# Start app!
 docker-compose up --build
+
+
 
