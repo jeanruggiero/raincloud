@@ -19,7 +19,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'raincloud.highlift.io']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'raincloud.highlift.io', 'ec2-34-221-29-235.us-west-2.compute.amazonaws.com']
 
 
 # Application definition

@@ -19,3 +19,25 @@ sudo systemctl enable containerd.service
 
 sudo systemstl start docker.service
 docker run hello-world
+
+sudo yum install git
+
+# Add a deploy key
+ssh-keygen -t ed25519 -C "your_email@example.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/<keyname>
+
+# Add public key to github repo as a deploy key
+
+git clone <repo-ssh-url>
+cd <source-dir>
+
+# Generate secret key
+cat /dev/urandom | base64 | head -c 32
+
+export SECRET_KEY=<key>
+export DB_USER=<db_user>
+export DB_PASSWORD=<db_password>
+
+docker-compose up --build
+
