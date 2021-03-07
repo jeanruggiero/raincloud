@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432"
+    hostname: db
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  gunicorn:
+    image: python3
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    command: bash -c "python manage.py migrate && gunicorn raincloud.wsgi --bind 0.0.0.0:8010 --workers 3"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_PORT=5432
+      - SECRET_KEY=$SECRET_KEY
+    expose:
+      - 8010
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+    depends_on:
+      - gunicorn
