@@ -14,7 +14,7 @@ class TimestreamClient:
             aws_secret_access_key=os.environ.get('TIMESTREAM_SECRET_ACCESS_KEY')
         )
 
-        self.client = session.client('timestream-query')
+        self.client = session.client('timestream-query', region_name="us-west-2")
         self.paginator = self.client.get_paginator('query')
 
     def read(self, sensor_id, record_count=10):

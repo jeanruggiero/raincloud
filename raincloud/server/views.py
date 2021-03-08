@@ -14,12 +14,40 @@ def index(request):
 
 class Data(View):
 
-    @method_decorator(csrf_exempt)
     def get(self, request, sensor_id, *args, **kwargs):
         timestream_client = TimestreamClient()
-        data = timestream_client.read(sensor_id, request.GET.get('n', None))
+        data = timestream_client.read(sensor_id, record_count=request.GET.get('n', None))
 
-        return HttpResponse(data)
+        return HttpResponse(json.dumps(data), status=200, content_type="application/json")
+
+
+class Status(View):
+    def get(self, request, *args, **kwargs):
+        sensors = [
+            {
+                "sensor_id": 1,
+                "type": "pressure",
+                "units": "HPa",
+                "location": "desk",
+                "description": "test pressure sensor"
+            },
+            {
+                "sensor_id": 2,
+                "type": "temperature",
+                "units": "deg C",
+                "location": "desk",
+                "description": "test temperature sensor"
+            }
+        ]
+
+        timestream_client = TimestreamClient()
+
+        for sensor in sensors:
+            data = timestream_client.read(sensor['sensor_id'], record_count=1)[0]['Data'][0]
+            sensor['value'] = data['Value']
+            sensor['timestamp'] = data['Timestamp']
+
+        return HttpResponse(json.dumps({"status": sensors}), status=200, content_type="application/json")
 
 
 class SensorList(View):
@@ -47,11 +75,11 @@ class SensorDetail(View):
 
         elif sensor_id == 2:
             body = {
-                "sensor_id": 1,
-                "type": "pressure",
-                "units": "HPa",
+                "sensor_id": 2,
+                "type": "temperature",
+                "units": "deg C",
                 "location": "desk",
-                "description": "test pressure sensor"
+                "description": "test temperature sensor"
             }
         else:
             return HttpResponseNotFound()
