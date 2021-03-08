@@ -5,6 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 
+from .timestream import TimestreamClient
+
 
 def index(request):
     return HttpResponse("Hello raincloud!")
@@ -14,15 +16,10 @@ class Data(View):
 
     @method_decorator(csrf_exempt)
     def get(self, request, sensor_id, *args, **kwargs):
-        print(f"received data from sensor id: {sensor_id}")
+        timestream_client = TimestreamClient()
+        data = timestream_client.read(sensor_id, request.GET.get('n', None))
 
-        body = json.loads(request.body)
-        print(body['timestamp'])
-        print(body['value'])
-
-        # Write data to Timestream
-
-        return HttpResponse(201)
+        return HttpResponse(data)
 
 
 class SensorList(View):
