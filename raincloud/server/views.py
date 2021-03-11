@@ -26,17 +26,24 @@ class Status(View):
         sensors = [
             {
                 "sensor_id": 1,
-                "type": "pressure",
-                "units": "HPa",
-                "location": "desk",
-                "description": "test pressure sensor"
+                "type": "humidity",
+                "units": "%",
+                "location": "indoor garden",
+                "description": "relative humidity"
             },
             {
                 "sensor_id": 2,
                 "type": "temperature",
                 "units": "deg C",
-                "location": "desk",
-                "description": "test temperature sensor"
+                "location": "indoor garden",
+                "description": "ambient temperature"
+            },
+            {
+                "sensor_id": 3,
+                "type": "soil_moisture",
+                "units": "",
+                "location": "indoor garden basil 1 inch cell",
+                "description": "soil moisture basil ch0"
             }
         ]
 
@@ -54,7 +61,7 @@ class SensorList(View):
 
     def get(self, request, *args, **kwargs):
         body = {
-            "results": [1, 2]
+            "results": [1, 2, 3]
         }
 
         return HttpResponse(json.dumps(body), status=200, content_type="application/json")
@@ -67,10 +74,10 @@ class SensorDetail(View):
         if sensor_id == 1:
             body = {
                 "sensor_id": 1,
-                "type": "pressure",
-                "units": "HPa",
-                "location": "desk",
-                "description": "test pressure sensor"
+                "type": "humidity",
+                "units": "%",
+                "location": "indoor garden",
+                "description": "relative humidity"
             }
 
         elif sensor_id == 2:
@@ -78,8 +85,17 @@ class SensorDetail(View):
                 "sensor_id": 2,
                 "type": "temperature",
                 "units": "deg C",
-                "location": "desk",
-                "description": "test temperature sensor"
+                "location": "indoor garden",
+                "description": "ambient temperature"
+            }
+
+        elif sensor_id == 3:
+            body = {
+                "sensor_id": 3,
+                "type": "soil_moisture",
+                "units": "",
+                "location": "indoor garden basil 1 inch cell",
+                "description": "soil moisture basil ch0"
             }
         else:
             return HttpResponseNotFound()
