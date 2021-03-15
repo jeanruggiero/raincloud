@@ -14,6 +14,7 @@ def index(request):
 
 class Data(View):
 
+    @csrf_exempt
     def get(self, request, sensor_id, *args, **kwargs):
         timestream_client = TimestreamClient()
         data = timestream_client.read(sensor_id, record_count=request.GET.get('n', None))
@@ -22,6 +23,7 @@ class Data(View):
 
 
 class Status(View):
+    @csrf_exempt
     def get(self, request, *args, **kwargs):
         sensors = [
             {
