@@ -9,6 +9,14 @@ files:
   - source: /
     destination: /home/ec2-user
 
+permissions:
+  - object: /home/ec2-user/scripts
+    pattern: "*.sh"
+    owner: ec2-user
+    mode: 666
+    type:
+      - file
+
 hooks:
 # During the ApplicationStart deployment lifecycle event, run the commands
 #   in the script specified in "location".
