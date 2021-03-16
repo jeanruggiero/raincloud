@@ -1,0 +1,50 @@
+version: 0.2
+
+env:
+  exported-variables:
+    - TIMESTREAM_ACCESS_KEY_ID
+    - TIMESTREAM_SECRET_ACCESS_KEY
+    - SECRET_KEY
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+      - apt-get update -y
+      - apt-get install -y docker wget
+      - curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      - chmod +x /usr/local/bin/docker-compose
+      - usermod -aG docker $USER
+      - newgrp docker
+      - sudo systemctl enable docker.service
+      - sudo systemctl enable containerd.service
+      - sudo systemstl start docker.service
+    finally:
+      - echo This always runs even if the update or install command fails
+
+  build:
+    commands:
+      - docker-compose build
+    finally:
+      - echo This always runs even if the install command fails
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
+
+artifacts:
+  files:
+    - target/messageUtil-1.0.jar
+  discard-paths: yes
+  secondary-artifacts:
+    artifact1:
+      files:
+        - target/artifact-1.0.jar
+      discard-paths: yes
+    artifact2:
+      files:
+        - target/artifact-2.0.jar
+      discard-paths: yes
+cache:
+  paths:
+    - '/root/.m2/**/*'
