@@ -15,7 +15,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'raincloud.highlift.io', 'ec2-34-221-29-235.us-west-2.compute.amazonaws.com']
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost", "http://73.221.22.158"
+    "http://localhost:3000", "http://73.221.22.158"
 ]
 
 # Application definition
