@@ -22,6 +22,18 @@ class Data(View):
         return HttpResponse(json.dumps(data), status=200, content_type="application/json")
 
 
+class DataList(View):
+
+    def get(self):
+        timestream_client = TimestreamClient()
+
+        return HttpResponse(
+            json.dumps(
+                {sensor_id: timestream_client.read(sensor_id, record_count=100) for sensor_id in [1, 2, 3]}
+            )
+        )
+
+
 class Status(View):
     @csrf_exempt
     def get(self, request, *args, **kwargs):
