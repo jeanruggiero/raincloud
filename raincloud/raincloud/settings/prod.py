@@ -12,7 +12,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'raincloud.highlift.io', 'ec2-34-221-29-235.us-west-2.compute.amazonaws.com']
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+    'localhost',
+    'api.raincloud.highlift.io',
+    'ec2-34-221-29-235.us-west-2.compute.amazonaws.com'
+]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
