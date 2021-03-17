@@ -24,7 +24,7 @@ class Data(View):
 
 class DataList(View):
 
-    def get(self):
+    def get(self, request, *args, **kwargs):
         timestream_client = TimestreamClient()
 
         return HttpResponse(
