@@ -29,7 +29,7 @@ class DataList(View):
 
         return HttpResponse(
             json.dumps(
-                {sensor_id: timestream_client.read(sensor_id, record_count=1200) for sensor_id in [1, 2, 3]}
+                {sensor_id: timestream_client.read(sensor_id, record_count=12000) for sensor_id in [1, 2, 3]}
             )
         )
 
