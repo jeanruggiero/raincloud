@@ -28,7 +28,7 @@ class DataList(View):
 
         # Query parameters
         sample_rate = request.GET.get('sample_rate', 1/(60*6))
-        record_count = request.GET.get('record_count', 10*24)
+        record_count = request.GET.get('record_count', 240)
 
         timestream_client = TimestreamClient()
 
