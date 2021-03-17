@@ -17,7 +17,7 @@ class Data(View):
     @csrf_exempt
     def get(self, request, sensor_id, *args, **kwargs):
         timestream_client = TimestreamClient()
-        data = timestream_client.read(sensor_id, record_count=request.GET.get('n', None))
+        data = timestream_client.read(sensor_id, record_count=request.GET.get('record_count', 10))
 
         return HttpResponse(json.dumps(data), status=200, content_type="application/json")
 
@@ -25,11 +25,20 @@ class Data(View):
 class DataList(View):
 
     def get(self, request, *args, **kwargs):
+
+        # Query parameters
+        sample_rate = request.GET.get('sample_rate', 1/(60*6))
+        record_count = request.GET.get('record_count', 10*24)
+
         timestream_client = TimestreamClient()
 
         return HttpResponse(
             json.dumps(
-                {sensor_id: timestream_client.read(sensor_id, record_count=12000) for sensor_id in [1, 2, 3]}
+                {sensor_id:
+                    timestream_client.read(
+                        sensor_id, record_count=record_count, sample_rate=sample_rate
+                    ) for sensor_id in [1, 2, 3]
+                }
             )
         )
 
